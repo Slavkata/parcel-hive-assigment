@@ -48,6 +48,11 @@ async def feed_coords(websocket):
 
 
 def insert_data(coords: str, image: bytes):
+    """
+    Inserts coordinate and image to the database
+    :param coords:
+    :param image:
+    """
     cursor.execute("INSERT INTO CoordsImages VALUES (?,?)", (coords, image))
     con.commit()
     con.close()
@@ -55,7 +60,8 @@ def insert_data(coords: str, image: bytes):
 
 def on_click_handle(incoming_coords: str):
     """
-    Handles on click event coming from the browser
+    Handles on click event coming from the browser\
+    :param incoming_coords:
     """
     image = capture_image(path.join(__file__, f'images/{datetime.now().isoformat()}.png'))
     insert_data(incoming_coords, image)
@@ -83,11 +89,17 @@ async def setup_web_socket(websocket):
     await asyncio.wait([f1, f2])
 
 def setup_db():
+    """
+    Sets up the database in case it does not exists
+    """
     cursor.execute("CREATE TABLE IF NOT EXISTS CoordsImages (coords TEXT PRIMARY KEY, image BLOB NOT NULL)")
     con.commit()
 
 
 def main():
+    """
+    Starts up the websockets
+    """
     setup_db()
     start_server = websockets.serve(setup_web_socket, "localhost", 8000)
     asyncio.get_event_loop().run_until_complete(start_server)
