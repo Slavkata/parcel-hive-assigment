@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Mouse following image taking socket utilizing saving to sqlite application</title>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const websocket = new WebSocket('ws://localhost:8000/')
+            const element = document.getElementById('mouse-pos')
+
+            document.addEventListener('click', () => {
+                websocket.send(element.textContent)
+            })
+
+            websocket.onmessage = ({data}) => {
+                element.textContent = data
+            };
+        });
+    </script>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            background: #d6d6d6;
+        }
+
+        p {
+            font-size: 30px;
+            font-weight: bold;
+            color: #008080;
+        }
+    </style>
+</head>
+<body>
+<p>Current mouse position: </p>
+<p id="mouse-pos"></p>
+</body>
+</html>

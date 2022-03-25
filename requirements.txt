@@ -1,0 +1,4 @@
+websockets~=10.2
+pyserial~=3.5
+PyAutoGUI~=0.9.53
+opencv-python~=4.5.5.64
